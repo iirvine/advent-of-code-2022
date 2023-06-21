@@ -1,14 +1,4 @@
-import {
-  buildState,
-  day7_pt1,
-  day7_pt2,
-  parseCommand,
-  total,
-} from "../7-no-space";
-
-test("parseCmd", () => {
-  let ans = parseCommand("$ cd /");
-});
+import { buildState, day7_pt1, day7_pt2, stat } from "../7-no-space";
 
 test("buildState", () => {
   const s = buildState([
@@ -60,20 +50,10 @@ $ ls
   const s = buildState(input);
   expect(s).toMatchSnapshot();
 
-  const t = total(s.filetree["/a"], s.filetree);
+  const t = stat(s.filetree["/a"], s.filetree);
   expect(t).toBe(29116 + 2557 + 62596 + 584);
 
-  const dirs: [string, number][] = [];
-
-  const result = Object.entries(s.filetree).reduce<number>((acc, [k, v]) => {
-    const t = total(v, s.filetree);
-    dirs.push([k, t]);
-    return acc + t;
-  }, 0);
-
-  console.log(dirs);
-
-  const t2 = total(s.filetree["/"], s.filetree);
+  const t2 = stat(s.filetree["/"], s.filetree);
   expect(t2).toBe(48381165);
 });
 
