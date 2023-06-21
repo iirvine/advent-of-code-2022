@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`buildState 1`] = `
+{
+  "cwd": "/",
+  "filetree": {
+    "/": {
+      "directories": [
+        "a",
+        "b",
+      ],
+      "files": [],
+      "name": "/",
+    },
+    "/a": {
+      "directories": [
+        "c",
+      ],
+      "files": [
+        {
+          "name": "a.txt",
+          "size": 1234,
+        },
+      ],
+      "name": "/a",
+    },
+  },
+}
+`;
+
+exports[`buildState test input 1`] = `
+{
+  "cwd": "/d",
+  "filetree": {
+    "/": {
+      "directories": [
+        "a",
+        "d",
+      ],
+      "files": [
+        {
+          "name": "b.txt",
+          "size": 14848514,
+        },
+        {
+          "name": "c.dat",
+          "size": 8504156,
+        },
+      ],
+      "name": "/",
+    },
+    "/a": {
+      "directories": [
+        "e",
+      ],
+      "files": [
+        {
+          "name": "f",
+          "size": 29116,
+        },
+        {
+          "name": "g",
+          "size": 2557,
+        },
+        {
+          "name": "h.lst",
+          "size": 62596,
+        },
+      ],
+      "name": "/a",
+    },
+    "/a/e": {
+      "directories": [],
+      "files": [
+        {
+          "name": "i",
+          "size": 584,
+        },
+      ],
+      "name": "/a/e",
+    },
+    "/d": {
+      "directories": [],
+      "files": [
+        {
+          "name": "j",
+          "size": 4060174,
+        },
+        {
+          "name": "d.log",
+          "size": 8033020,
+        },
+        {
+          "name": "d.ext",
+          "size": 5626152,
+        },
+        {
+          "name": "k",
+          "size": 7214296,
+        },
+      ],
+      "name": "/d",
+    },
+  },
+}
+`;
