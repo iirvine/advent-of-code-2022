@@ -27,7 +27,7 @@ interface State {
   filetree: Record<string, Node>;
 }
 
-const Root = "/";
+const ROOT = "/";
 
 export function parseCommand(s: string): Command {
   const [prompt, cmd, ...args] = s.split(" ");
@@ -39,11 +39,11 @@ export function parseCommand(s: string): Command {
 
 export function parentPath(p: string) {
   const parts = p.split("/");
-  return parts.length > 2 ? parts.slice(0, parts.length - 1).join("/") : Root;
+  return parts.length > 2 ? parts.slice(0, parts.length - 1).join("/") : ROOT;
 }
 
 export function changePath(cwd: string, path: string) {
-  return path === Root ? Root : cwd === Root ? `/${path}` : `${cwd}/${path}`;
+  return path === ROOT ? ROOT : cwd === ROOT ? `/${path}` : `${cwd}/${path}`;
 }
 
 export function buildState(input: string[]): State {
@@ -87,7 +87,7 @@ export function buildState(input: string[]): State {
   );
 }
 
-export function stat(n: Node, filetree: Record<string, Node>) {
+export function stat(n: Node, filetree: Record<string, Node>): number {
   const files = n.files.reduce((acc, curr) => acc + curr.size, 0);
   const dirs = n.directories.reduce(
     (acc, curr) => acc + stat(filetree[changePath(n.name, curr)], filetree),
@@ -111,19 +111,16 @@ export function day7_pt1() {
 }
 
 export function day7_pt2() {
-  const totalSpace = 700_00_000;
-  const requiredSpace = 30_000_000;
   const state = buildState(INPUT);
 
-  const rootTotal = stat(state.filetree[Root], state.filetree);
+  const totalSpace = 70_000_000;
+  const requiredSpace = 30_000_000;
+  const rootTotal = stat(state.filetree[ROOT], state.filetree);
   const freeSpace = totalSpace - rootTotal;
   const needed = requiredSpace - freeSpace;
 
   return Object.entries(state.filetree)
-    .map(([k, v]) => {
-      const t = stat(v, state.filetree);
-      return [k, t];
-    })
+    .map<[string, number]>(([k, v]) => [k, stat(v, state.filetree)])
     .filter(([, v]) => v > needed)
     .sort(([, a], [, b]) => a - b)
     .at(0);

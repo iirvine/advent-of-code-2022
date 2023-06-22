@@ -26,6 +26,7 @@ export function parse(s: string): Grid {
     );
 }
 
+// Iterate over the cells of a grid within the given bounds from top left to bottom right
 export function* iterateWithinBounds(grid: Grid, bounds: Bounds) {
   const [min, max] = bounds;
   for (let y = min[1]; y <= max[1]; y++) {
@@ -42,6 +43,7 @@ export function getBounds(grid: Grid): Bounds {
   ];
 }
 
+// Traverse the grid in a given direction, starting at a given coordinate
 export function* traverseFrom(grid: Grid, start: Coord, direction: Direction) {
   const [min, max] = getBounds(grid);
   let [x, y] = start;
@@ -65,6 +67,20 @@ export function* traverseFrom(grid: Grid, start: Coord, direction: Direction) {
     }
     yield grid[y][x];
   }
+}
+
+// Calculate the scenic score of a cell, given the sightlines in each direction
+export function score(candidate: Cell, sightlines: Cell[][]): number {
+  return sightlines.reduce((scenicScore, cells) => {
+    let visible = 0;
+    for (const cell of cells) {
+      visible++;
+      if (cell.value >= candidate.value) {
+        break;
+      }
+    }
+    return scenicScore * visible;
+  }, 1);
 }
 
 export function day8_pt1(input) {
@@ -106,21 +122,7 @@ export function day8_pt2(input) {
       (direction: Direction) => [...traverseFrom(grid, coord, direction)],
     );
 
-    let scenicScore = 1;
-    for (const cells of sightlines) {
-      let visible = 0;
-      for (const cell of cells) {
-        if (cell.value < value) {
-          visible++;
-        } else {
-          visible++;
-          break;
-        }
-      }
-      scenicScore *= visible;
-    }
-
-    highestScore = Math.max(highestScore, scenicScore);
+    highestScore = Math.max(highestScore, score({ coord, value }, sightlines));
   }
 
   return highestScore;
