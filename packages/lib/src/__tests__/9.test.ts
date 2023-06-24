@@ -1,4 +1,4 @@
-import { day9_pt1, day9_pt2, move, Position, run } from "../9-rope-bridge";
+import { day9_pt1, day9_pt2, moveHead, Position, run } from "../9-rope-bridge";
 
 test("run", () => {
   /* 0 1 2 3 4 5

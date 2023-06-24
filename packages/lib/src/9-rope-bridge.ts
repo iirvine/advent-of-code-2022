@@ -25,7 +25,7 @@ function parse(input: string): Instruction[] {
   return input.split("\n").map(parseInstruction);
 }
 
-export function move([x, y]: Position, direction: Direction): Position {
+export function moveHead([x, y]: Position, direction: Direction): Position {
   switch (direction) {
     case "U":
       return [x, y + 1];
@@ -38,7 +38,7 @@ export function move([x, y]: Position, direction: Direction): Position {
   }
 }
 
-export function follow(
+export function moveTail(
   [tailX, tailY]: Position,
   [headX, headY]: Position,
 ): Position {
@@ -63,24 +63,25 @@ export function follow(
   return [x, y];
 }
 
+function moveRope(rope: Position[], direction: Direction): Position[] {
+  const [head, ...tail] = rope;
+  const nextHead = moveHead(head, direction);
+  const nextTail = tail.reduce(
+    (acc, curr, idx) =>
+      acc.concat([moveTail(curr, idx === 0 ? nextHead : acc[idx - 1])]),
+    [] as Position[],
+  );
+  return [nextHead, ...nextTail];
+}
+
 export function run(length: number, instructions: Instruction[]): number {
   let r: Position[] = new Array(length).fill([0, 0]);
   let tailPositions: Set<string> = new Set(["0,0"]);
 
   for (const { direction, distance } of instructions) {
     for (let i = 0; i < distance; i++) {
-      let [head, ...tail] = r;
-      head = move(head, direction);
-      tail = tail.reduce(
-        (acc, curr, idx) =>
-          acc.concat([follow(curr, idx === 0 ? head : acc[idx - 1])]),
-        [] as Position[],
-      );
-      tailPositions = new Set([
-        ...tailPositions,
-        tail.at(-1)?.join(",") ?? "0,0",
-      ]);
-      r = [head, ...tail];
+      r = moveRope(r, direction);
+      tailPositions.add(r[r.length - 1].join(","));
     }
   }
 
