@@ -98,14 +98,14 @@ export function day10_pt2(instructions: Instruction[]) {
     const spriteMin = machine.registers.x - 1;
     const spriteMax = machine.registers.x + 1;
     const testPixel = (machine.cycles % 40) - 1;
-    if (machine.cycles % 40 === 0) {
+    if ((machine.cycles - 1) % 40 === 0) {
       image.push("\n");
     }
 
     if (testPixel >= spriteMin && testPixel <= spriteMax) {
       image.push("█");
     } else {
-      image.push(" ");
+      image.push("░");
     }
   }
 
