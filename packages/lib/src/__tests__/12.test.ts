@@ -1,12 +1,17 @@
-import { PriorityQ } from "../12-hill-climbing";
+import { day12_pt1, INPUT, day12_pt2 } from "../12-hill-climbing";
 
-test("priorityQueue", () => {
-  let heap = new PriorityQ<number>((a, b) => b - a);
-  heap.push(1);
-  heap.push(2);
-  heap.push(5);
-  heap.push(3);
-  heap.push(4);
+const testInput = `
+Sabqponm
+abcryxxl
+accszExk
+acctuvwj
+abdefghi
+`.trim();
 
-  expect(heap.pop()).toBe(5);
+test("day12_pt1", () => {
+  console.log(day12_pt1(testInput));
+});
+
+test("day12_pt2", () => {
+  console.log(day12_pt2(INPUT));
 });
